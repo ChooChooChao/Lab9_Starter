@@ -69,20 +69,20 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
+      <button id="log">Console Log</button>
+      <button id="error">Console Error</button>
+      <button id="count">Console Count</button>
+      <button id="warn">Console Warn</button>
+      <button id="assert">Console Assert</button>
+      <button id="clear">Console Clear</button>
+      <button id="dir">Console Dir</button>
+      <button id="dirxml">Console dirxml</button>
+      <button id="group-start">Console Group Start</button>
+      <button id="group-end">Console Group End</button>
+      <button id="table">Console Table</button>
+      <button id="start-timer">Start Timer</button>
+      <button id="end-timer">End Timer</button>
+      <button id="trace">Console Trace</button>
       <button>Trigger a Global Error</button>
     </section>
   </main>
@@ -102,6 +102,130 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    // Console Log button
+    let consoleLog = document.getElementById('log');
+    consoleLog.addEventListener('click', () => {
+      console.log('Console Log Button Functionality');
+    });
+
+    // Console Error button
+    let consoleError = document.getElementById('error');
+    consoleError.addEventListener('click', () => {
+      console.error("Console error button functionality");
+    });
+
+    // Console count button
+    let consoleCount = document.getElementById('count');
+    consoleCount.addEventListener('click', () => {
+      console.count();
+      console.count('CSE110');
+      console.count();
+      console.count();
+      console.count('CSE110');
+      console.count('CSE110');
+      console.count('CSE110');
+    });
+
+    // Console warn button
+    let consoleWarn = document.getElementById('warn');
+    consoleWarn.addEventListener('click', () => {
+      console.warn("Console Warn Button functionality");
+    });
+
+    // Console assert button
+    let consoleAssert = document.getElementById('assert');
+    consoleAssert.addEventListener('click', () => {
+      const x = 5;
+      const y = 3;
+      const reason = 'x is expected to be less than y';
+      console.assert(x < y, {x, y, reason});
+    });
+
+    // Console clear button
+    let consoleClear = document.getElementById('clear');
+    consoleClear.addEventListener('click', () => {
+      console.clear();
+    });
+
+    // Console dir button
+    let consoleDir = document.getElementById('dir');
+    consoleDir.addEventListener('click', () => {
+      console.dir(document.head);
+    });
+
+    // Console dirxml button
+    let consoleDirxml = document.getElementById('dirxml');
+    consoleDirxml.addEventListener('click', () => {
+      console.dirxml(document);
+    });
+
+    // Group start button
+    const label = "people in CSE 110 Group 30";
+    let consoleGroupStart = document.getElementById('group-start');
+    consoleGroupStart.addEventListener('click', () => {
+      console.group(label);
+      console.info("Phoebe");
+      console.info("Kabir");
+      console.info("Kenneth");
+      console.info("Ali");
+      console.info("James");
+      console.info("Andy");
+      console.info("Umar");
+      console.info("Sanjith");
+      console.info("Shravi");
+      console.info("Nathan");
+    });
+
+    // Group start button
+    let consoleGroupEnd = document.getElementById('group-end');
+    consoleGroupEnd.addEventListener('click', () => {
+      console.groupEnd(label);
+      console.log("group ended");
+    });
+
+    // Consol Table button
+    let consoleTable = document.getElementById('table');
+    consoleTable.addEventListener('click', () => {
+      let people = [
+        {
+          first: 'Nathan',
+          last: 'Chao',
+        },
+        {
+          first: 'Thomas',
+          last: 'Powell',
+        },
+        {
+          first: 'Jonathan',
+          last: 'Yin',
+        }
+      ];
+      console.table(people);
+    });
+
+    // Console start timer button
+    let consoleStartTimer = document.getElementById('start-timer');
+    consoleStartTimer.addEventListener('click', () => {
+      console.log('timer started');
+      console.time();
+    });
+
+    // Console end timer button
+    let consoleEndTimer = document.getElementById('end-timer');
+    consoleEndTimer.addEventListener('click', () => {
+      console.log('timer ended');
+      console.timeEnd();
+    });
+
+    // Console trace button
+    let consoleTrace = document.getElementById('trace');
+    consoleTrace.addEventListener('click', () => {
+      const first = () => { second(); };
+      const second = () => { third(); };
+      const third = () => { fourth(); };
+      const fourth = () => { console.trace(); };
+      first();
+    });
   </script>
 </body>
 
