@@ -51,11 +51,11 @@
 
 <body>
   <main>
-    <form>
+    <!-- <form> -->
       <fieldset>
         <legend>Error Calculator</legend>
         <input name="first-num" id="first-num" />
-        <select name="operator" id="operator">
+        <!-- <select name="operator" id="operator"> -->
           <option>+</option>
           <option>-</option>
           <option>*</option>
@@ -88,16 +88,6 @@
   </main>
 
   <script>
-    let form = document.querySelector('form');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
-    });
-
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
@@ -156,7 +146,7 @@
     // Console dirxml button
     let consoleDirxml = document.getElementById('dirxml');
     consoleDirxml.addEventListener('click', () => {
-      console.dirxml(document);
+      console.dirxml(document.head);
     });
 
     // Group start button
@@ -184,9 +174,7 @@
     });
 
     // Consol Table button
-    let consoleTable = document.getElementById('table');
-    consoleTable.addEventListener('click', () => {
-      let people = [
+    let people = [
         {
           first: 'Nathan',
           last: 'Chao',
@@ -200,6 +188,8 @@
           last: 'Yin',
         }
       ];
+    let consoleTable = document.getElementById('table');
+    consoleTable.addEventListener('click', () => {
       console.table(people);
     });
 
@@ -226,6 +216,63 @@
       const fourth = () => { console.trace(); };
       first();
     });
+
+    // try, catch, finally
+    function tryCatchFinally() {
+      try {
+        alert('try');
+        if (confirm('make an error')) {
+          let form = document.querySelector('form');
+          form.addEventListener('submit', e => {
+            e.preventDefault();
+            let output = document.querySelector('output');
+            let firstNum = document.querySelector('#first-num').value;
+            let secondNum = document.querySelector('#second-num').value;
+            let operator = document.querySelector('#operator').value;
+            output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+          });
+        }
+      } catch (err) {
+        alert('catch');
+      } finally {
+        alert('finally');
+      }
+    }
+    tryCatchFinally();
+
+    class ValidationError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "ValidationError";
+      }
+    }
+
+    // Usage
+    function readUser(json) {
+      let user = JSON.parse(json);
+
+      if (!user.firt) {
+        throw new ValidationError("No field: first name");
+      }
+      if (!user.last) {
+        throw new ValidationError("No field: last name");
+      }
+
+      return user;
+    }
+
+    // Working example with try..catch
+    try {
+      let user = readUser(people);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        alert("Invalid data: " + err.message); // Invalid data: No field: name
+      } else if (err instanceof SyntaxError) { // (*)
+        alert("JSON Syntax Error: " + err.message);
+      } else {
+        throw err; // unknown error, rethrow it (**)
+      }
+    }
   </script>
 </body>
 
