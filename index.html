@@ -51,11 +51,11 @@
 
 <body>
   <main>
-    <!-- <form> -->
+    <form>
       <fieldset>
         <legend>Error Calculator</legend>
         <input name="first-num" id="first-num" />
-        <!-- <select name="operator" id="operator"> -->
+        <select name="operator" id="operator">
           <option>+</option>
           <option>-</option>
           <option>*</option>
@@ -83,11 +83,49 @@
       <button id="start-timer">Start Timer</button>
       <button id="end-timer">End Timer</button>
       <button id="trace">Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id="global-error">Trigger a Global Error</button>
     </section>
   </main>
 
+  <!-- TrackJS Script -->
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "d27f972bdabf409db0d289ad3d9d600f"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
+  <script>
+    class ValidationError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "ValidationError"; // (2)
+      }
+    }
+
+    let form = document.querySelector('form');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      try {
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+
+        if (isNaN(firstNum) == null || isNaN(secondNum)) {
+          throw new ValidationError("One of the inputs is not a valid integer.")
+        }
+
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (err) {
+        if (err instanceof ValidationError) {
+          console.error("Uncaught " + err.stack);
+        }
+      } finally {
+      }
+    });
+
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
@@ -217,62 +255,13 @@
       first();
     });
 
-    // try, catch, finally
-    function tryCatchFinally() {
-      try {
-        alert('try');
-        if (confirm('make an error')) {
-          let form = document.querySelector('form');
-          form.addEventListener('submit', e => {
-            e.preventDefault();
-            let output = document.querySelector('output');
-            let firstNum = document.querySelector('#first-num').value;
-            let secondNum = document.querySelector('#second-num').value;
-            let operator = document.querySelector('#operator').value;
-            output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
-          });
-        }
-      } catch (err) {
-        alert('catch');
-      } finally {
-        alert('finally');
-      }
-    }
-    tryCatchFinally();
+    // Console trace button
+    let globalError = document.getElementById('global-error');
+    globalError.addEventListener('click', () => {
+      thisFunction();
 
-    class ValidationError extends Error {
-      constructor(message) {
-        super(message);
-        this.name = "ValidationError";
-      }
-    }
-
-    // Usage
-    function readUser(json) {
-      let user = JSON.parse(json);
-
-      if (!user.firt) {
-        throw new ValidationError("No field: first name");
-      }
-      if (!user.last) {
-        throw new ValidationError("No field: last name");
-      }
-
-      return user;
-    }
-
-    // Working example with try..catch
-    try {
-      let user = readUser(people);
-    } catch (err) {
-      if (err instanceof ValidationError) {
-        alert("Invalid data: " + err.message); // Invalid data: No field: name
-      } else if (err instanceof SyntaxError) { // (*)
-        alert("JSON Syntax Error: " + err.message);
-      } else {
-        throw err; // unknown error, rethrow it (**)
-      }
-    }
+      window.onerror = console.error(err.stack);
+    });
   </script>
 </body>
 
