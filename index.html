@@ -113,7 +113,7 @@
         let secondNum = document.querySelector('#second-num').value;
         let operator = document.querySelector('#operator').value;
 
-        if (isNaN(firstNum) == null || isNaN(secondNum)) {
+        if (isNaN(firstNum) || isNaN(secondNum)) {
           throw new ValidationError("One of the inputs is not a valid integer.")
         }
 
